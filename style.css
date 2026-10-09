@@ -1,0 +1,393 @@
+/* ============================================================
+   NeuronLabs — Ultra-Premium Techie Theme
+   Dark cyber/neon · animated grid · glowing cyan/violet accents
+   ============================================================ */
+
+/* ---------- 1. Design tokens ---------- */
+:root {
+  --bg-void: #05060f;
+  --bg-deep: #0a0c1c;
+  --cyan: #00f0ff;
+  --violet: #7c5cff;
+  --magenta: #ff4ecd;
+  --text: #e8ecff;
+  --text-dim: #97a0c7;
+  --glass: rgba(16, 20, 44, 0.55);
+  --glass-strong: rgba(20, 25, 55, 0.75);
+
+  --glow-cyan: 0 0 24px rgba(0, 240, 255, 0.35);
+  --glow-violet: 0 0 32px rgba(124, 92, 255, 0.35);
+  --line-glow: 0 0 12px rgba(0, 240, 255, 0.45);
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --max-w: 1080px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --font-display: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, monospace;
+}
+
+/* ---------- 2. Fonts ---------- */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ---------- 3. Reset & base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1rem);
+  line-height: 1.7;
+  color: var(--text);
+  background-color: var(--bg-void);
+  background-image:
+    radial-gradient(ellipse 60% 45% at 15% -5%, rgba(124, 92, 255, 0.28), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 90% 10%, rgba(0, 240, 255, 0.16), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 50% 110%, rgba(255, 78, 205, 0.12), transparent 65%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ---------- 4. Animated perspective grid ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 92, 255, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-drift 14s linear infinite;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* vignette / CRT depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 120% 120% at 50% 50%, transparent 55%, rgba(2, 3, 10, 0.75) 100%);
+}
+
+@keyframes grid-drift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 0 56px, 56px 0; }
+}
+
+/* ---------- 5. Hero wordmark ---------- */
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 2rem + 7vw, 6.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-align: center;
+  padding: clamp(3rem, 8vh, 5.5rem) 1.5rem 1.5rem;
+  background: linear-gradient(
+    110deg,
+    var(--cyan) 0%,
+    #ffffff 25%,
+    var(--violet) 55%,
+    var(--magenta) 78%,
+    var(--cyan) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(0, 240, 255, 0.35))
+          drop-shadow(0 0 42px rgba(124, 92, 255, 0.25));
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ---------- 6. Sticky glass header ---------- */
+header {
+  position: sticky;
+  top: 1rem;
+  z-index: 10;
+  max-width: var(--max-w);
+  margin: 0.5rem auto 0;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom-color: rgba(0, 240, 255, 0.35);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    var(--line-glow);
+  width: calc(100% - 2rem);
+  animation: drop-in 0.8s var(--ease-out) both;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.5rem, 3vw, 1.75rem);
+  list-style: none;
+}
+
+nav a {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-dim);
+  border-radius: 999px;
+  transition:
+    color 0.35s var(--ease-out),
+    background-color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    transform 0.35s var(--ease-spring);
+}
+
+/* animated underline sweep */
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 1.15rem;
+  right: 1.15rem;
+  bottom: 0.28rem;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+  box-shadow: var(--line-glow);
+}
+
+nav a:hover,
+nav a:focus-visible {
+  color: #ffffff;
+  background: rgba(0, 240, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(0, 240, 255, 0.25), var(--glow-cyan);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+nav a:hover::after,
+nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+nav a:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ---------- 7. Main & glassmorphic section cards ---------- */
+main {
+  max-width: var(--max-w);
+  margin: clamp(2.5rem, 6vh, 4.5rem) auto 0;
+  padding: 0 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+section {
+  position: relative;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--glass-strong), var(--glass));
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 14px 44px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  transition:
+    transform 0.5s var(--ease-spring),
+    box-shadow 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out);
+  animation: rise-in 0.9s var(--ease-out) both;
+}
+
+section:nth-child(1) { animation-delay: 0.15s; }
+section:nth-child(2) { animation-delay: 0.3s; }
+
+/* luminous top edge */
+section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--violet), transparent);
+  opacity: 0.8;
+  box-shadow: var(--line-glow);
+}
+
+/* sweeping sheen */
+section::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -80%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  transform: rotate(8deg);
+  transition: left 0.8s var(--ease-out);
+  pointer-events: none;
+}
+
+section:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(0, 240, 255, 0.3),
+    var(--glow-violet);
+}
+
+section:hover::after {
+  left: 130%;
+}
+
+section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.9rem;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+}
+
+/* pulsing accent chip before headings */
+section h2::before {
+  content: "";
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-right: 0.7rem;
+  border-radius: 3px;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  box-shadow: var(--glow-cyan);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+
+section p {
+  color: var(--text-dim);
+  max-width: 58ch;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.82); }
+}
+
+@keyframes drop-in {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- 8. Footer ---------- */
+footer {
+  max-width: var(--max-w);
+  margin: clamp(3rem, 8vh, 5rem) auto 0;
+  padding: 1.75rem 1.25rem 2.5rem;
+  text-align: center;
+  position: relative;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.6), rgba(124, 92, 255, 0.6), transparent);
+  box-shadow: var(--line-glow);
+}
+
+footer p {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-shadow: 0 0 12px rgba(124, 92, 255, 0.4);
+}
+
+/* ---------- 9. Responsive tweaks ---------- */
+@media (max-width: 640px) {
+  header {
+    top: 0.5rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.75rem;
+  }
+
+  nav a::after {
+    left: 0.85rem;
+    right: 0.85rem;
+  }
+
+  footer::before {
+    left: 5%;
+    right: 5%;
+  }
+}
+
+/* ---------- 10. Accessibility: reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
